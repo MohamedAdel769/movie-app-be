@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 public class Movie {
@@ -13,6 +12,8 @@ public class Movie {
     @GeneratedValue
     private Integer id;
 
+    @Lob
+    //@Column(length = 512)
     private String overview;
 
     @Column(nullable = false)
@@ -34,9 +35,9 @@ public class Movie {
     private Date releaseDate;
 
     @Column(name = "run_time")
-    private Short runTime;
+    private Short runtime;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "movies_actors",
             joinColumns = @JoinColumn(name = "movie_id"),
@@ -44,7 +45,7 @@ public class Movie {
     )
     private Set<Actor> actors = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "movies_genres",
             joinColumns = @JoinColumn(name = "movie_id"),
@@ -61,7 +62,7 @@ public class Movie {
                  String title, String backdropPath,
                  String posterPath, Integer voteCount,
                  Double voteAverage, Date releaseDate,
-                 Short runTime) {
+                 Short runtime) {
         super();
         this.id = id;
         this.overview = overview;
@@ -71,7 +72,7 @@ public class Movie {
         this.voteCount = voteCount;
         this.voteAverage = voteAverage;
         this.releaseDate = releaseDate;
-        this.runTime = runTime;
+        this.runtime = runtime;
     }
     //</editor-fold>
 
@@ -140,12 +141,12 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    public Short getRunTime() {
-        return runTime;
+    public Short getRuntime() {
+        return runtime;
     }
 
-    public void setRunTime(Short runTime) {
-        this.runTime = runTime;
+    public void setRuntime(Short runTime) {
+        this.runtime = runTime;
     }
 
     public Set<Actor> getActors() {
@@ -172,7 +173,7 @@ public class Movie {
                 ", title='" + title + '\'' +
                 ", voteAverage=" + voteAverage +
                 ", releaseDate=" + releaseDate +
-                ", runTime=" + runTime +
+                ", runTime=" + runtime +
                 '}';
     }
 }
