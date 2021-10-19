@@ -1,15 +1,15 @@
 package com.stp.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 
 @Entity
 public class Movie {
 
     @Id
-    @GeneratedValue
     private Integer id;
 
     @Lob
@@ -20,22 +20,24 @@ public class Movie {
     private String title;
 
     @Column(name = "backdrop_path", length = 50)
+    @JsonProperty(value = "backdrop_path")
     private String backdropPath;
 
     @Column(name = "poster_path",length = 50)
+    @JsonProperty(value = "poster_path")
     private String posterPath;
 
     @Column(name = "vote_count", nullable = false)
+    @JsonProperty(value = "vote_count")
     private Integer voteCount;
 
     @Column(name = "vote_average", nullable = false, precision = 2, scale = 1)
+    @JsonProperty(value = "vote_average")
     private Double voteAverage;
 
     @Column(name = "release_date", nullable = false)
-    private Date releaseDate;
-
-    @Column(name = "run_time")
-    private Short runtime;
+    @JsonProperty(value = "release_date")
+    private LocalDate releaseDate; //localdate?
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -45,12 +47,13 @@ public class Movie {
     )
     private Set<Actor> actors = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "movies_genres",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
+    @JsonProperty(value = "genre_ids")
     private Set<Genre> genres = new HashSet<>();
 
     //<editor-fold desc="Constructor">
@@ -58,12 +61,11 @@ public class Movie {
 
     }
 
+
     public Movie(Integer id, String overview,
                  String title, String backdropPath,
                  String posterPath, Integer voteCount,
-                 Double voteAverage, Date releaseDate,
-                 Short runtime) {
-        super();
+                 Double voteAverage, LocalDate releaseDate) {
         this.id = id;
         this.overview = overview;
         this.title = title;
@@ -72,7 +74,6 @@ public class Movie {
         this.voteCount = voteCount;
         this.voteAverage = voteAverage;
         this.releaseDate = releaseDate;
-        this.runtime = runtime;
     }
     //</editor-fold>
 
@@ -133,20 +134,12 @@ public class Movie {
         this.voteAverage = voteAverage;
     }
 
-    public Date getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
-    }
-
-    public Short getRuntime() {
-        return runtime;
-    }
-
-    public void setRuntime(Short runTime) {
-        this.runtime = runTime;
     }
 
     public Set<Actor> getActors() {
@@ -170,10 +163,15 @@ public class Movie {
     public String toString() {
         return "Movie{" +
                 "id=" + id +
+                ", overview='" + overview + '\'' +
                 ", title='" + title + '\'' +
+                ", backdropPath='" + backdropPath + '\'' +
+                ", posterPath='" + posterPath + '\'' +
+                ", voteCount=" + voteCount +
                 ", voteAverage=" + voteAverage +
                 ", releaseDate=" + releaseDate +
-                ", runTime=" + runtime +
+//                ", actors=" + actors +
+//                ", genres=" + genres +
                 '}';
     }
 }

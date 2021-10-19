@@ -33,4 +33,8 @@ public class MovieService {
     public void deleteMovieById(Integer id) {
         movieRepository.deleteById(id);
     }
+
+    public void deleteAll(){
+        movieRepository.deleteAll();
+    }
 }
