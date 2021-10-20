@@ -1,5 +1,6 @@
 package com.stp.app.controller;
 
+import com.stp.app.dto.Page;
 import com.stp.app.entity.Genre;
 import com.stp.app.entity.Movie;
 import com.stp.app.service.GenreService;
@@ -28,9 +29,9 @@ public class MovieController {
 //    }
     //</editor-fold>
 
-    @RequestMapping(value = "/movies")
-    public ResponseEntity<List<Movie>> getAllMovies() {
-        return ResponseEntity.ok(movieService.getAll());
+    @RequestMapping(method = RequestMethod.PUT, value = "/movies")
+    public ResponseEntity<List<Movie>> getAllMovies(@RequestBody Page page) {
+        return ResponseEntity.ok(movieService.getAll(page));
     }
 
     @RequestMapping("/movies/{id}")
