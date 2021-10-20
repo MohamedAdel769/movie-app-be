@@ -6,6 +6,7 @@ import com.stp.app.service.GenreService;
 import com.stp.app.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,19 +28,22 @@ public class MovieController {
 //    }
     //</editor-fold>
 
-    @RequestMapping("/movies")
-    public List<Movie> getAllMovies() {
-        return movieService.getAll();
+    @RequestMapping(value = "/movies")
+    public ResponseEntity<List<Movie>> getAllMovies() {
+        return ResponseEntity.ok(movieService.getAll());
     }
 
     @RequestMapping("/movies/{id}")
-    public Movie getMovie(@PathVariable Integer id){
-        // TODO: What if movie not found ?
-        return movieService.getById(id);
+    public ResponseEntity<Movie> getMovie(@PathVariable Integer id){
+        Movie movie = movieService.getById(id);
+        if(movie == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(movie);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/admin/add/movie")
-    public void addMovie(@RequestBody Movie movie) {
-        movieService.addMovie(movie);
-    }
+//    @RequestMapping(method = RequestMethod.POST, value = "/admin/add/movie")
+//    public void addMovie(@RequestBody Movie movie) {
+//        movieService.addMovie(movie);
+//    }
 }
