@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.management.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,21 @@ public class MovieService {
 
     public void addMovie(Movie movie) {
         movieRepository.save(movie);
+    }
+
+    public Movie flagMovie(Integer id){
+        Movie movie = getById(id);
+        if(movie == null)
+            return null;
+
+        movie.updateFlags();
+        addMovie(movie);
+
+        return movie;
+    }
+
+    public List<Movie> getAllFlaged(){
+        return movieRepository.findMovieByFlagsGreaterThan(0);
     }
 
     public void deleteMovieById(Integer id) {

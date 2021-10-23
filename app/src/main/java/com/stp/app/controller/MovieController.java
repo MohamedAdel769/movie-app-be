@@ -46,6 +46,15 @@ public class MovieController {
         return ResponseEntity.ok(movie);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/movies/{id}")
+    public ResponseEntity<?> flagMovie(@PathVariable Integer id){
+        Movie movie = movieService.flagMovie(id);
+        if(movie == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(movie);
+    }
+
 //    @RequestMapping(method = RequestMethod.POST, value = "/admin/add/movie")
 //    public void addMovie(@RequestBody Movie movie) {
 //        movieService.addMovie(movie);
