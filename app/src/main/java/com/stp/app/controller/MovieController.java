@@ -31,12 +31,24 @@ public class MovieController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/movies")
     public ResponseEntity<List<Movie>> getAllMovies(@RequestBody Page page) {
+        if(page == null)
+            page = new Page();
+
         return ResponseEntity.ok(movieService.getAll(page));
     }
 
     @RequestMapping("/movies/{id}")
     public ResponseEntity<Movie> getMovie(@PathVariable Integer id){
         Movie movie = movieService.getById(id);
+        if(movie == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(movie);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/movies/{id}")
+    public ResponseEntity<?> flagMovie(@PathVariable Integer id){
+        Movie movie = movieService.flagMovie(id);
         if(movie == null)
             return ResponseEntity.notFound().build();
 

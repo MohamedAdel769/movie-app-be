@@ -8,6 +8,7 @@ import java.util.*;
 
 @Entity
 public class Movie {
+    //TODO: primtive types ?
 
     @Id
     private Integer id;
@@ -37,7 +38,15 @@ public class Movie {
 
     @Column(name = "release_date", nullable = false)
     @JsonProperty(value = "release_date")
-    private LocalDate releaseDate; //localdate?
+    private LocalDate releaseDate;
+
+    @Column(name = "is_hidden", columnDefinition = "boolean default false")
+    private Boolean isHidden;
+
+    //TODO: assume user flag once or handle it using set<user,flag>?
+    @Column(name = "flags", columnDefinition = "integer default 0")
+    private Integer flags;
+
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -142,6 +151,22 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
+    public Boolean getHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        isHidden = hidden;
+    }
+
+    public Integer getFlags() {
+        return flags;
+    }
+
+    public void setFlags(Integer flags) {
+        this.flags = flags;
+    }
+
     public Set<Actor> getActors() {
         return actors;
     }
@@ -159,6 +184,10 @@ public class Movie {
     }
     //</editor-fold>
 
+    public void updateFlags(){
+        this.flags += 1;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -170,8 +199,7 @@ public class Movie {
                 ", voteCount=" + voteCount +
                 ", voteAverage=" + voteAverage +
                 ", releaseDate=" + releaseDate +
-//                ", actors=" + actors +
-//                ", genres=" + genres +
+                ", flags=" + flags +
                 '}';
     }
 }
