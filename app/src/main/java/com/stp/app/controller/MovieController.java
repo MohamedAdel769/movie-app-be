@@ -31,6 +31,9 @@ public class MovieController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/movies")
     public ResponseEntity<List<Movie>> getAllMovies(@RequestBody Page page) {
+        if(page == null)
+            page = new Page();
+
         return ResponseEntity.ok(movieService.getAll(page));
     }
 
