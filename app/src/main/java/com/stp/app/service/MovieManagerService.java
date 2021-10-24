@@ -9,16 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MovieManagerService {
-
+public class MovieManagerService extends MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    @Autowired
-    private MovieService movieService;
-
     public Movie flagMovie(Integer id){
-        Movie movie = movieService.getById(id);
+        Movie movie = getById(id);
         if(movie == null)
             return null;
 
@@ -28,7 +24,7 @@ public class MovieManagerService {
         if(movie.getFlags() > 10)
             movie = hideTopFlagged(movie);
 
-        movieService.addMovie(movie);
+        addMovie(movie);
 
         return movie;
     }
@@ -44,7 +40,7 @@ public class MovieManagerService {
             return null;
 
         movie.get().updateIsHidden();
-        movieService.addMovie(movie.get());
+        addMovie(movie.get());
 
         return movie.get();
     }
