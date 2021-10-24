@@ -1,5 +1,6 @@
 package com.stp.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -47,7 +48,6 @@ public class Movie {
     @Column(name = "flags", columnDefinition = "integer default 0")
     private Integer flags;
 
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "movies_actors",
@@ -64,6 +64,10 @@ public class Movie {
     )
     @JsonProperty(value = "genre_ids")
     private Set<Genre> genres = new HashSet<>();
+
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    @JsonIgnore
+    Set<UserRating> userRatings = new HashSet<>();
 
     //<editor-fold desc="Constructor">
     public Movie() {
@@ -181,6 +185,14 @@ public class Movie {
 
     public void setGenres(Set<Genre> genres) {
         this.genres = genres;
+    }
+
+    public Set<UserRating> getUserRatings() {
+        return userRatings;
+    }
+
+    public void setUserRatings(Set<UserRating> userRatings) {
+        this.userRatings = userRatings;
     }
     //</editor-fold>
 

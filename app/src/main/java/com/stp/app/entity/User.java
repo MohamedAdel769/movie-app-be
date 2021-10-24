@@ -1,5 +1,7 @@
 package com.stp.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +22,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<UserRating> userRatings = new HashSet<>();
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;
@@ -29,6 +35,7 @@ public class User {
 
     }
 
+    //<editor-fold desc="Getters and Setters">
     public Integer getId() {
         return id;
     }
@@ -61,4 +68,12 @@ public class User {
         this.role = role;
     }
 
+    public Set<UserRating> getRatedMovies() {
+        return userRatings;
+    }
+
+    public void setRatedMovies(Set<UserRating> ratedMovies) {
+        this.userRatings = ratedMovies;
+    }
+    //</editor-fold>
 }

@@ -1,6 +1,7 @@
 package com.stp.app.service;
 
 import com.stp.app.dto.Page;
+import com.stp.app.dto.Rate;
 import com.stp.app.entity.Movie;
 import com.stp.app.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;

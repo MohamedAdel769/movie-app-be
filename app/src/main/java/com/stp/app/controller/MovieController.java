@@ -1,17 +1,19 @@
 package com.stp.app.controller;
 
 import com.stp.app.dto.Page;
+import com.stp.app.dto.Rate;
 import com.stp.app.entity.Genre;
 import com.stp.app.entity.Movie;
-import com.stp.app.service.GenreService;
-import com.stp.app.service.MovieManagerService;
-import com.stp.app.service.MovieService;
+import com.stp.app.entity.User;
+import com.stp.app.service.*;
+import com.stp.app.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -22,6 +24,9 @@ public class MovieController {
 
     @Autowired
     private MovieManagerService movieManagerService;
+
+    @Autowired
+    private UserRatingService userRatingService;
 
     //<editor-fold desc="Test block">
 //    @Autowired
@@ -56,6 +61,17 @@ public class MovieController {
         if(movie == null)
             return ResponseEntity.notFound().build();
 
+        return ResponseEntity.ok(movie);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/movies/{id}")
+    public ResponseEntity<Movie> rateMovie(@PathVariable Integer id,
+                                       @RequestHeader("Authorization") String header,
+                                       @RequestBody Rate rate){
+
+        Movie movie = userRatingService.rateMovie(id, header, rate);
+        if(movie == null)
+            return ResponseEntity.notFound().build();
         return ResponseEntity.ok(movie);
     }
 

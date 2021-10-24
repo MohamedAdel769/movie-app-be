@@ -17,6 +17,16 @@ public class JwtUtil {
     //TODO: where to save it ?
     private String SECRET_KEY = "secret";
 
+    public String extractUsernameByHeader(String header) {
+        String email = null;
+        if(header != null && header.startsWith("jwt ")){
+            String jwt = header.substring(4);
+            email = extractUsername(jwt);
+        }
+
+        return email;
+    }
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
