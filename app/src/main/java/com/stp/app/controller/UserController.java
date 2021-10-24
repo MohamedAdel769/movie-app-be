@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -31,7 +32,7 @@ public class UserController {
     @Autowired
     private MovieService movieService;
 
-    @RequestMapping(method = RequestMethod.POST, name = "/login")
+    @RequestMapping(method = RequestMethod.POST, value = "/login")
     public ResponseEntity<AuthResponse> logIn(@RequestBody AuthRequest authRequest) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
@@ -51,7 +52,12 @@ public class UserController {
 
     @RequestMapping("/admin")
     public ResponseEntity<List<Movie>> getFlagged(){
-        return ResponseEntity.ok(movieService.getAllFlaged());
+        return ResponseEntity.ok(movieService.getAllFlagged());
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/admin/{movieId}")
+    public ResponseEntity<Movie> toggleHidden(@PathVariable Integer movieId){
+        return ResponseEntity.ok(movieService.toggleHidden(movieId));
     }
 }
 

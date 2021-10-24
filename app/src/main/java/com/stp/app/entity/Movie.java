@@ -188,6 +188,10 @@ public class Movie {
         this.flags += 1;
     }
 
+    public void updateIsHidden() {
+        this.isHidden = !this.isHidden;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +

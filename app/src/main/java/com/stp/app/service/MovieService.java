@@ -27,9 +27,7 @@ public class MovieService {
 
     public List<Movie> getAll(Page page) {
         Pageable pageable = PageRequest.of(page.getPageIndex()-1, page.getPageSize());
-        List<Movie> movieList = new ArrayList<>();
-        movieRepository.findAll(pageable).forEach(movieList::add);
-        return movieList;
+        return movieRepository.findAllByIsHiddenFalse(pageable);
     }
 
     public Movie getById(Integer id) {
@@ -52,8 +50,19 @@ public class MovieService {
         return movie;
     }
 
-    public List<Movie> getAllFlaged(){
+    public List<Movie> getAllFlagged(){
         return movieRepository.findMovieByFlagsGreaterThan(0);
+    }
+
+    public Movie toggleHidden(Integer id){
+        Movie movie = getById(id);
+        if(movie == null)
+            return null;
+
+        movie.updateIsHidden();
+        addMovie(movie);
+
+        return movie;
     }
 
     public void deleteMovieById(Integer id) {
