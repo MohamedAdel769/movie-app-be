@@ -31,38 +31,15 @@ public class MovieService {
     }
 
     public Movie getById(Integer id) {
-        Optional<Movie> movie = movieRepository.findById(id);
-        return movie.orElse(null);
+        Optional<Movie> optionalMovie = movieRepository.findById(id);
+        Movie movie = optionalMovie.orElse(null);
+        if(movie == null || movie.getHidden())
+            return null;
+        return movie;
     }
 
     public void addMovie(Movie movie) {
         movieRepository.save(movie);
-    }
-
-    public Movie flagMovie(Integer id){
-        Movie movie = getById(id);
-        if(movie == null)
-            return null;
-
-        movie.updateFlags();
-        addMovie(movie);
-
-        return movie;
-    }
-
-    public List<Movie> getAllFlagged(){
-        return movieRepository.findMovieByFlagsGreaterThan(0);
-    }
-
-    public Movie toggleHidden(Integer id){
-        Movie movie = getById(id);
-        if(movie == null)
-            return null;
-
-        movie.updateIsHidden();
-        addMovie(movie);
-
-        return movie;
     }
 
     public void deleteMovieById(Integer id) {

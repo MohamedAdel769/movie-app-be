@@ -11,4 +11,5 @@ public interface MovieRepository extends CrudRepository<Movie, Integer>, PagingA
 
     List<Movie> findMovieByFlagsGreaterThan(Integer flags);
     List<Movie> findAllByIsHiddenFalse(Pageable pageable);
+    List<Movie> findMovieByFlagsGreaterThanAndIsHiddenFalse(Integer flags);
 }
