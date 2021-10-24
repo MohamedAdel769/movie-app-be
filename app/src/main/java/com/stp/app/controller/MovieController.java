@@ -4,6 +4,7 @@ import com.stp.app.dto.Page;
 import com.stp.app.entity.Genre;
 import com.stp.app.entity.Movie;
 import com.stp.app.service.GenreService;
+import com.stp.app.service.MovieManagerService;
 import com.stp.app.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,9 @@ public class MovieController {
 
     @Autowired
     MovieService movieService;
+
+    @Autowired
+    private MovieManagerService movieManagerService;
 
     //<editor-fold desc="Test block">
 //    @Autowired
@@ -48,7 +52,7 @@ public class MovieController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/movies/{id}")
     public ResponseEntity<?> flagMovie(@PathVariable Integer id){
-        Movie movie = movieService.flagMovie(id);
+        Movie movie = movieManagerService.flagMovie(id);
         if(movie == null)
             return ResponseEntity.notFound().build();
 

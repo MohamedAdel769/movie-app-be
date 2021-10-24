@@ -27,33 +27,19 @@ public class MovieService {
 
     public List<Movie> getAll(Page page) {
         Pageable pageable = PageRequest.of(page.getPageIndex()-1, page.getPageSize());
-        List<Movie> movieList = new ArrayList<>();
-        movieRepository.findAll(pageable).forEach(movieList::add);
-        return movieList;
+        return movieRepository.findAllByIsHiddenFalse(pageable);
     }
 
     public Movie getById(Integer id) {
-        Optional<Movie> movie = movieRepository.findById(id);
-        return movie.orElse(null);
+        Optional<Movie> optionalMovie = movieRepository.findById(id);
+        Movie movie = optionalMovie.orElse(null);
+        if(movie == null || movie.getHidden())
+            return null;
+        return movie;
     }
 
     public void addMovie(Movie movie) {
         movieRepository.save(movie);
-    }
-
-    public Movie flagMovie(Integer id){
-        Movie movie = getById(id);
-        if(movie == null)
-            return null;
-
-        movie.updateFlags();
-        addMovie(movie);
-
-        return movie;
-    }
-
-    public List<Movie> getAllFlaged(){
-        return movieRepository.findMovieByFlagsGreaterThan(0);
     }
 
     public void deleteMovieById(Integer id) {
