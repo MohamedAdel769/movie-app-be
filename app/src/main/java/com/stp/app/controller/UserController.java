@@ -6,6 +6,7 @@ import com.stp.app.entity.Movie;
 import com.stp.app.security.AppUserDetailsService;
 import com.stp.app.service.MovieManagerService;
 import com.stp.app.service.MovieService;
+import com.stp.app.service.RecommendationService;
 import com.stp.app.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private MovieService movieService;
+    private RecommendationService recommendationService;
 
     @Autowired
     private MovieManagerService movieManagerService;
@@ -52,6 +53,11 @@ public class UserController {
         String jwt = jwtUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthResponse(jwt));
+    }
+
+    @RequestMapping("/user/recommendations")
+    public ResponseEntity<List<Movie>> getRecommendations(@RequestHeader("Authorization") String header){
+        return ResponseEntity.ok(recommendationService.recommend(header));
     }
 
     @RequestMapping("/admin")
