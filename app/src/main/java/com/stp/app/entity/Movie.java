@@ -2,6 +2,7 @@ package com.stp.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -47,7 +48,10 @@ public class Movie {
     @Column(columnDefinition = "integer default 0")
     private Integer flags;
 
-    //TODO: assume user flag once or handle it using set<user,flag>?
+    @Column(columnDefinition = "varchar(5) default tmdb")
+    private String source;
+
+    @Column(name = "movie")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "movies_flags",
@@ -210,6 +214,14 @@ public class Movie {
 
     public void setFlags(Integer flags) {
         this.flags = flags;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     //</editor-fold>

@@ -69,6 +69,7 @@ public class UserController {
     public ResponseEntity<Movie> toggleHidden(@PathVariable Integer movieId){
         return ResponseEntity.ok(movieManagerService.toggleHidden(movieId));
     }
+
 }
 
 

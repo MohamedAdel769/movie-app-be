@@ -76,8 +76,5 @@ public class MovieController {
         return ResponseEntity.ok(movie);
     }
 
-//    @RequestMapping(method = RequestMethod.POST, value = "/admin/add/movie")
-//    public void addMovie(@RequestBody Movie movie) {
-//        movieService.addMovie(movie);
-//    }
+
 }
