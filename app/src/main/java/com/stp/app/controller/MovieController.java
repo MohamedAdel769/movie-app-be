@@ -56,8 +56,9 @@ public class MovieController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/movies/{id}")
-    public ResponseEntity<?> flagMovie(@PathVariable Integer id){
-        Movie movie = movieManagerService.flagMovie(id);
+    public ResponseEntity<?> flagMovie(@RequestHeader("Authorization") String header,
+                                       @PathVariable Integer id){
+        Movie movie = movieManagerService.flagMovie(id, header);
         if(movie == null)
             return ResponseEntity.notFound().build();
 

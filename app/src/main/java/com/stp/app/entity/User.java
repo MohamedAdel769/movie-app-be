@@ -26,6 +26,10 @@ public class User {
     @JsonIgnore
     private Set<UserRating> userRatings = new HashSet<>();
 
+    @ManyToMany(mappedBy = "usersFlagged", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Movie> flaggedMovies;
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;
@@ -75,5 +79,22 @@ public class User {
     public void setRatedMovies(Set<UserRating> ratedMovies) {
         this.userRatings = ratedMovies;
     }
+
+    public Set<UserRating> getUserRatings() {
+        return userRatings;
+    }
+
+    public void setUserRatings(Set<UserRating> userRatings) {
+        this.userRatings = userRatings;
+    }
+
+    public Set<Movie> getFlaggedMovies() {
+        return flaggedMovies;
+    }
+
+    public void setFlaggedMovies(Set<Movie> flaggedMovies) {
+        this.flaggedMovies = flaggedMovies;
+    }
+
     //</editor-fold>
 }

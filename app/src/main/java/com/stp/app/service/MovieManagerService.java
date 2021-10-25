@@ -1,7 +1,9 @@
 package com.stp.app.service;
 
 import com.stp.app.entity.Movie;
+import com.stp.app.entity.User;
 import com.stp.app.repository.MovieRepository;
+import com.stp.app.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +15,24 @@ public class MovieManagerService extends MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public Movie flagMovie(Integer id){
+    @Autowired
+    private UserService userService;
+
+    public Movie flagMovie(Integer id, String token){
         Movie movie = getById(id);
-        if(movie == null)
+        User user = userService.getByToken(token);
+
+        if(movie == null || user == null)
             return null;
 
-        movie.updateFlags();
+        movie.addUserFlag(user);
 
         //TODO: automatic hide?
-        if(movie.getFlags() > 10)
+        if(movie.getUsersFlagged().size() > 10)
             movie = hideTopFlagged(movie);
 
         addMovie(movie);
+        userService.addUser(user);
 
         return movie;
     }
@@ -35,19 +43,17 @@ public class MovieManagerService extends MovieService {
 
     //TODO: reset flags when show movie?
     public Movie toggleHidden(Integer id){
-        Optional<Movie> movie = movieRepository.findById(id);
-        if(movie.isEmpty())
+        Movie movie = movieRepository.findById(id).orElse(null);
+        if(movie == null)
             return null;
 
-        movie.get().updateIsHidden();
-        addMovie(movie.get());
+        movie.updateIsHidden();
+        addMovie(movie);
 
-        return movie.get();
+        return movie;
     }
 
     public Movie hideTopFlagged(Movie movie){
-        //List<Movie> movieList = movieRepository.findMovieByFlagsGreaterThanAndIsHiddenFalse(10);
-        //movieList.forEach(movie -> toggleHidden(movie.getId()));
         if(!movie.getHidden())
             movie.updateIsHidden();
 

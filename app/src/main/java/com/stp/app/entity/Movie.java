@@ -44,9 +44,18 @@ public class Movie {
     @Column(name = "is_hidden", columnDefinition = "boolean default false")
     private Boolean isHidden;
 
-    //TODO: assume user flag once or handle it using set<user,flag>?
-    @Column(name = "flags", columnDefinition = "integer default 0")
+    @Column(columnDefinition = "integer default 0")
     private Integer flags;
+
+    //TODO: assume user flag once or handle it using set<user,flag>?
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "movies_flags",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    @JsonIgnore
+    private Set<User> usersFlagged;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -163,12 +172,12 @@ public class Movie {
         isHidden = hidden;
     }
 
-    public Integer getFlags() {
-        return flags;
+    public Set<User> getUsersFlagged() {
+        return usersFlagged;
     }
 
-    public void setFlags(Integer flags) {
-        this.flags = flags;
+    public void setUsersFlagged(Set<User> usersFlagged) {
+        this.usersFlagged = usersFlagged;
     }
 
     public Set<Actor> getActors() {
@@ -194,10 +203,20 @@ public class Movie {
     public void setUserRatings(Set<UserRating> userRatings) {
         this.userRatings = userRatings;
     }
+
+    public Integer getFlags() {
+        return flags;
+    }
+
+    public void setFlags(Integer flags) {
+        this.flags = flags;
+    }
+
     //</editor-fold>
 
-    public void updateFlags(){
-        this.flags += 1;
+    public void addUserFlag(User user){
+        usersFlagged.add(user);
+        flags = usersFlagged.size();
     }
 
     public void updateIsHidden() {

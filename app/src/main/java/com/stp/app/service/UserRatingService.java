@@ -24,8 +24,7 @@ public class UserRatingService {
     @Autowired
     private MovieService movieService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+
 
     public Movie updateMovieRating(Movie movie, Rate rate){
         Double old_avg = movie.getVoteAverage();
@@ -39,8 +38,7 @@ public class UserRatingService {
 
     public Movie rateMovie(Integer movieId, String jwtToken, Rate rate){
         Movie movie = movieService.getById(movieId);
-        String email = jwtUtil.extractUsernameByHeader(jwtToken);
-        User user = userService.getByEmail(email).orElse(null);
+        User user = userService.getByToken(jwtToken);
 
         // if movie or user not found
         if(movie == null || user == null)
