@@ -37,6 +37,9 @@ public class UserController {
     @Autowired
     private MovieManagerService movieManagerService;
 
+    @Autowired
+    private MovieService movieService;
+
     @RequestMapping(method = RequestMethod.POST, value = "/login")
     public ResponseEntity<AuthResponse> logIn(@RequestBody AuthRequest authRequest) throws Exception {
         try {
@@ -70,6 +73,13 @@ public class UserController {
         return ResponseEntity.ok(movieManagerService.toggleHidden(movieId));
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/admin/add/movie")
+    public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
+        movie.setSource("admin");
+        movieService.addMovie(movie);
+
+        return ResponseEntity.ok(movie);
+    }
 }
 
 

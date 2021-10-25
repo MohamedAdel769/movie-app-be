@@ -13,6 +13,7 @@ public class Movie {
     //TODO: primtive types ?
 
     @Id
+    @GeneratedValue
     private Integer id;
 
     @Lob
@@ -59,7 +60,7 @@ public class Movie {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     @JsonIgnore
-    private Set<User> usersFlagged;
+    private Set<User> usersFlagged = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
