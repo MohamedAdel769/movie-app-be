@@ -35,7 +35,7 @@ public class MovieService {
 
     public List<Movie> getTopRated() {
         final int TOP_RATED_SIZE = 20;
-        List<Movie> topRated = movieRepository.findAllByOrderByVoteAverageDesc();
+        List<Movie> topRated = movieRepository.findAllByIsHiddenFalseOrderByVoteAverageDesc();
         return topRated.stream().limit(TOP_RATED_SIZE).collect(Collectors.toList());
     }
 
