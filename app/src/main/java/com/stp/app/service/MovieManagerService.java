@@ -27,8 +27,7 @@ public class MovieManagerService extends MovieService {
 
         movie.addUserFlag(user);
 
-        //TODO: automatic hide?
-        if(movie.getUsersFlagged().size() > 10)
+        if(movie.getFlags() > 10)
             movie = hideTopFlagged(movie);
 
         userService.addUser(user);
@@ -40,7 +39,6 @@ public class MovieManagerService extends MovieService {
         return movieRepository.findMovieByFlagsGreaterThan(0);
     }
 
-    //TODO: reset flags when show movie?
     public Movie toggleHidden(Integer id){
         Movie movie = movieRepository.findById(id).orElse(null);
         if(movie == null)
