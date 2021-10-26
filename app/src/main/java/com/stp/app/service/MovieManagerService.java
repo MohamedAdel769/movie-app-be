@@ -31,10 +31,9 @@ public class MovieManagerService extends MovieService {
         if(movie.getUsersFlagged().size() > 10)
             movie = hideTopFlagged(movie);
 
-        addMovie(movie);
         userService.addUser(user);
 
-        return movie;
+        return addMovie(movie);
     }
 
     public List<Movie> getAllFlagged(){
@@ -48,9 +47,8 @@ public class MovieManagerService extends MovieService {
             return null;
 
         movie.updateIsHidden();
-        addMovie(movie);
 
-        return movie;
+        return addMovie(movie);
     }
 
     public Movie hideTopFlagged(Movie movie){

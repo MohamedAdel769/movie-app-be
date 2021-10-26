@@ -29,6 +29,8 @@ public class MovieService {
     }
 
     public List<Movie> getCatalog(Page page) {
+        if(page == null)
+            page = new Page();
         Pageable pageable = PageRequest.of(page.getPageIndex()-1, page.getPageSize());
         return movieRepository.findAllByIsHiddenFalse(pageable);
     }
@@ -51,15 +53,20 @@ public class MovieService {
         if(movie == null)
             return null;
 
+        //String ln = movie.getOriginalLanguage();
+
         movie.setGenres(movieDetails.getGenres());
         movie.setReleaseDate(movieDetails.getReleaseDate());
-        addMovie(movie);
+        movie.setOriginalLanguage(movieDetails.getLanguage());
 
-        return movie;
+        return addMovie(movie);
     }
 
-    public void addMovie(Movie movie) {
-        movieRepository.save(movie);
+    public Movie addMovie(Movie movie) {
+        if(movie == null)
+            return null;
+
+        return movieRepository.save(movie);
     }
 
     public void deleteAll(){

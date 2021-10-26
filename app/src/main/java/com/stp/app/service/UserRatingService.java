@@ -32,9 +32,8 @@ public class UserRatingService {
         Double new_avg = (old_avg * movie.getVoteCount() + rate.getRate()) / (movie.getVoteCount() + 1);
         movie.setVoteAverage(new_avg);
         movie.setVoteCount(movie.getVoteCount() + 1);
-        movieService.addMovie(movie);
 
-        return movie;
+        return movieService.addMovie(movie);
     }
 
     public Movie rateMovie(Integer movieId, String jwtToken, Rate rate){

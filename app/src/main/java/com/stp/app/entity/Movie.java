@@ -112,7 +112,7 @@ public class Movie {
         this.title = title;
         this.voteCount = voteCount;
         this.voteAverage = voteAverage;
-        this.releaseDate = LocalDate.of(2021, 10, 26);;
+        this.releaseDate = LocalDate.of(2021, 10, 26);
         this.originalLanguage = "en";
     }
     //</editor-fold>
