@@ -33,8 +33,7 @@ public class MovieService {
         return movieRepository.findAllByIsHiddenFalse(pageable);
     }
 
-    public List<Movie> getTopRated() {
-        final int TOP_RATED_SIZE = 20;
+    public List<Movie> getTopRated(int TOP_RATED_SIZE) {
         List<Movie> topRated = movieRepository.findAllByIsHiddenFalseOrderByVoteAverageDesc();
         return topRated.stream().limit(TOP_RATED_SIZE).collect(Collectors.toList());
     }
@@ -61,10 +60,6 @@ public class MovieService {
 
     public void addMovie(Movie movie) {
         movieRepository.save(movie);
-    }
-
-    public void deleteMovieById(Integer id) {
-        movieRepository.deleteById(id);
     }
 
     public void deleteAll(){

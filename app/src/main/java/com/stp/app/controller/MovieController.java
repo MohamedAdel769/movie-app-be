@@ -48,7 +48,7 @@ public class MovieController {
 
     @RequestMapping("/movies/topRated")
     public ResponseEntity<List<Movie>> getTopRated() {
-        return ResponseEntity.ok(movieService.getTopRated());
+        return ResponseEntity.ok(movieService.getTopRated(15));
     }
 
     @RequestMapping("/movies/{id}")
