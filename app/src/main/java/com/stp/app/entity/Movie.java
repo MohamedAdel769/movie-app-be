@@ -52,7 +52,10 @@ public class Movie {
     @Column(columnDefinition = "varchar(5) default tmdb")
     private String source = "tmdb";
 
-    @Column(name = "movie")
+    @Column(name = "original_language", length = 2, nullable = false)
+    @JsonProperty(value = "original_language")
+    private String originalLanguage;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "movies_flags",
@@ -223,6 +226,14 @@ public class Movie {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getOriginalLanguage() {
+        return originalLanguage;
+    }
+
+    public void setOriginalLanguage(String originalLanguage) {
+        this.originalLanguage = originalLanguage;
     }
 
     //</editor-fold>

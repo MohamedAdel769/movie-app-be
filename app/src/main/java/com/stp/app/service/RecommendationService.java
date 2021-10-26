@@ -65,7 +65,8 @@ public class RecommendationService {
         // get top-rated movies excluding watched ones
         movieService.getAll().forEach(
                 movie -> {
-                    if(!watchedMovies.contains(movie.getId()))
+                    if(!watchedMovies.contains(movie.getId()) && !movie.getHidden()
+                            && movie.getVoteAverage() > 7.0)
                         otherMovies.add(movie);
                 }
         );

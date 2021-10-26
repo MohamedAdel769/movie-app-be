@@ -10,5 +10,5 @@ import java.util.List;
 public interface MovieRepository extends CrudRepository<Movie, Integer>, PagingAndSortingRepository<Movie, Integer> {
     List<Movie> findMovieByFlagsGreaterThan(Integer flags);
     List<Movie> findAllByIsHiddenFalse(Pageable pageable);
-    List<Movie> findAllByOrderByVoteAverageDesc();
+    List<Movie> findAllByIsHiddenFalseOrderByVoteAverageDesc();
 }
