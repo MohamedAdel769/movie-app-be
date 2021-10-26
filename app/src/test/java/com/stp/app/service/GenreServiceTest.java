@@ -28,7 +28,7 @@ class GenreServiceTest {
     private GenreService genreService;
 
     @Nested
-    class getByIdTests {
+    class getGenreByIdTests {
         @Test
         void When_IdIsValid_Expect_TargetGenre() {
             Genre expected = new Genre(1, "test genre");

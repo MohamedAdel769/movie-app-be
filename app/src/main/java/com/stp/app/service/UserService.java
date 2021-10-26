@@ -31,13 +31,16 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public void addUser(User user) {
-        userRepository.save(user);
+    public User addUser(User user) {
+        if(user == null)
+            return null;
+        return userRepository.save(user);
     }
 
     public User getByToken(String token){
         String email = jwtUtil.extractUsernameByHeader(token);
+        Optional<User> user = getByEmail(email);
 
-        return getByEmail(email).orElse(null);
+        return user.orElse(null);
     }
 }

@@ -43,6 +43,7 @@ class MovieServiceTest {
         List<Movie> actual = movieService.getAll();
 
         assertThat(actual).isEqualTo(expected);
+        verify(movieRepository).findAll();
     }
 
     @Nested
@@ -104,7 +105,7 @@ class MovieServiceTest {
     }
 
     @Nested
-    class getByIdTests {
+    class getMovieByIdTests {
         @Test
         void When_IdIsValid_Expect_TargetMovie() {
             Movie expected = new Movie(1, "movie found", 0, 1.0);
