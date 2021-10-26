@@ -20,13 +20,13 @@ import java.util.Set;
 public class MovieController {
 
     @Autowired
-    MovieService movieService;
+    private MovieService movieService;
 
-    @Autowired
-    private MovieManagerService movieManagerService;
+//    @Autowired
+//    private MovieManagerService movieManagerService;
 
-    @Autowired
-    private UserRatingService userRatingService;
+//    @Autowired
+//    private UserRatingService userRatingService;
 
     //<editor-fold desc="Test block">
 //    @Autowired
@@ -48,7 +48,7 @@ public class MovieController {
 
     @RequestMapping("/movies/topRated")
     public ResponseEntity<List<Movie>> getTopRated() {
-        return ResponseEntity.ok(movieService.getTopRated());
+        return ResponseEntity.ok(movieService.getTopRated(15));
     }
 
     @RequestMapping("/movies/{id}")
@@ -60,26 +60,26 @@ public class MovieController {
         return ResponseEntity.ok(movie);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/movies/{id}")
-    public ResponseEntity<?> flagMovie(@RequestHeader("Authorization") String header,
-                                       @PathVariable Integer id){
-        Movie movie = movieManagerService.flagMovie(id, header);
-        if(movie == null)
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(movie);
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/movies/{id}")
-    public ResponseEntity<Movie> rateMovie(@PathVariable Integer id,
-                                       @RequestHeader("Authorization") String header,
-                                       @RequestBody Rate rate){
-
-        Movie movie = userRatingService.rateMovie(id, header, rate);
-        if(movie == null)
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(movie);
-    }
+//    @RequestMapping(method = RequestMethod.PUT, value = "/movies/{id}")
+//    public ResponseEntity<?> flagMovie(@RequestHeader("Authorization") String header,
+//                                       @PathVariable Integer id){
+//        Movie movie = movieManagerService.flagMovie(id, header);
+//        if(movie == null)
+//            return ResponseEntity.notFound().build();
+//
+//        return ResponseEntity.ok(movie);
+//    }
+//
+//    @RequestMapping(method = RequestMethod.POST, value = "/movies/{id}")
+//    public ResponseEntity<Movie> rateMovie(@PathVariable Integer id,
+//                                       @RequestHeader("Authorization") String header,
+//                                       @RequestBody Rate rate){
+//
+//        Movie movie = userRatingService.rateMovie(id, header, rate);
+//        if(movie == null)
+//            return ResponseEntity.notFound().build();
+//        return ResponseEntity.ok(movie);
+//    }
 
 
 }

@@ -105,6 +105,15 @@ public class Movie {
         this.voteAverage = voteAverage;
         this.releaseDate = releaseDate;
     }
+
+    public Movie(Integer id, String title, Integer voteCount, Double voteAverage) {
+        this.id = id;
+        this.title = title;
+        this.voteCount = voteCount;
+        this.voteAverage = voteAverage;
+        this.releaseDate = LocalDate.of(2021, 10, 26);;
+        this.originalLanguage = "en";
+    }
     //</editor-fold>
 
     //<editor-fold desc="Getters and Setters">
