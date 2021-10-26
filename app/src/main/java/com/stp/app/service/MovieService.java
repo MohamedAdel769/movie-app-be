@@ -23,7 +23,6 @@ public class MovieService {
     private MovieRepository movieRepository;
 
     public List<Movie> getAll() {
-        //TODO: top rated method return only 20 top movies, full catalog return all paginated msh shart rated.
         List<Movie> movieList = new ArrayList<>();
         movieRepository.findAll().forEach(movieList::add);
         return movieList;
