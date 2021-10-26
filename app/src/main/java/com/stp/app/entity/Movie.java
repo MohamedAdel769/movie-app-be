@@ -2,6 +2,7 @@ package com.stp.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ public class Movie {
     //TODO: primtive types ?
 
     @Id
+    @GeneratedValue
     private Integer id;
 
     @Lob
@@ -42,12 +44,15 @@ public class Movie {
     private LocalDate releaseDate;
 
     @Column(name = "is_hidden", columnDefinition = "boolean default false")
-    private Boolean isHidden;
+    private Boolean isHidden = false;
 
     @Column(columnDefinition = "integer default 0")
-    private Integer flags;
+    private Integer flags = 0;
 
-    //TODO: assume user flag once or handle it using set<user,flag>?
+    @Column(columnDefinition = "varchar(5) default tmdb")
+    private String source = "tmdb";
+
+    @Column(name = "movie")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "movies_flags",
@@ -55,7 +60,7 @@ public class Movie {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     @JsonIgnore
-    private Set<User> usersFlagged;
+    private Set<User> usersFlagged = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -210,6 +215,14 @@ public class Movie {
 
     public void setFlags(Integer flags) {
         this.flags = flags;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     //</editor-fold>

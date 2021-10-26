@@ -2,6 +2,7 @@ package com.stp.app.controller;
 
 import com.stp.app.dto.AuthRequest;
 import com.stp.app.dto.AuthResponse;
+import com.stp.app.dto.MovieDetails;
 import com.stp.app.entity.Movie;
 import com.stp.app.security.AppUserDetailsService;
 import com.stp.app.service.MovieManagerService;
@@ -37,6 +38,9 @@ public class UserController {
     @Autowired
     private MovieManagerService movieManagerService;
 
+    @Autowired
+    private MovieService movieService;
+
     @RequestMapping(method = RequestMethod.POST, value = "/login")
     public ResponseEntity<AuthResponse> logIn(@RequestBody AuthRequest authRequest) throws Exception {
         try {
@@ -68,6 +72,24 @@ public class UserController {
     @RequestMapping(method = RequestMethod.PUT, value = "/admin/{movieId}")
     public ResponseEntity<Movie> toggleHidden(@PathVariable Integer movieId){
         return ResponseEntity.ok(movieManagerService.toggleHidden(movieId));
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/admin/add/movie")
+    public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
+        movie.setSource("admin");
+        movieService.addMovie(movie);
+
+        return ResponseEntity.ok(movie);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/admin/update/{movieId}")
+    public ResponseEntity<Movie> updateMovie(@PathVariable Integer movieId,
+                                             @RequestBody MovieDetails movieDetails) {
+        Movie movie = movieService.update(movieId, movieDetails);
+        if(movie == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(movie);
     }
 }
 
