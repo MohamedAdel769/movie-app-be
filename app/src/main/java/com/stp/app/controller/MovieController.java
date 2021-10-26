@@ -43,7 +43,12 @@ public class MovieController {
         if(page == null)
             page = new Page();
 
-        return ResponseEntity.ok(movieService.getAll(page));
+        return ResponseEntity.ok(movieService.getCatalog(page));
+    }
+
+    @RequestMapping("/movies/topRated")
+    public ResponseEntity<List<Movie>> getTopRated() {
+        return ResponseEntity.ok(movieService.getTopRated());
     }
 
     @RequestMapping("/movies/{id}")

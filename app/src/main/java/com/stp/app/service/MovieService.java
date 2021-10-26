@@ -1,5 +1,6 @@
 package com.stp.app.service;
 
+import com.stp.app.dto.MovieDetails;
 import com.stp.app.dto.Page;
 import com.stp.app.dto.Rate;
 import com.stp.app.entity.Movie;
@@ -13,6 +14,7 @@ import javax.management.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieService {
@@ -27,9 +29,15 @@ public class MovieService {
         return movieList;
     }
 
-    public List<Movie> getAll(Page page) {
+    public List<Movie> getCatalog(Page page) {
         Pageable pageable = PageRequest.of(page.getPageIndex()-1, page.getPageSize());
         return movieRepository.findAllByIsHiddenFalse(pageable);
+    }
+
+    public List<Movie> getTopRated() {
+        final int TOP_RATED_SIZE = 20;
+        List<Movie> topRated = movieRepository.findAllByOrderByVoteAverageDesc();
+        return topRated.stream().limit(TOP_RATED_SIZE).collect(Collectors.toList());
     }
 
     public Movie getById(Integer id) {
@@ -37,6 +45,18 @@ public class MovieService {
         Movie movie = optionalMovie.orElse(null);
         if(movie == null || movie.getHidden())
             return null;
+        return movie;
+    }
+
+    public Movie update(Integer id, MovieDetails movieDetails){
+        Movie movie = getById(id);
+        if(movie == null)
+            return null;
+
+        movie.setGenres(movieDetails.getGenres());
+        movie.setReleaseDate(movieDetails.getReleaseDate());
+        addMovie(movie);
+
         return movie;
     }
 

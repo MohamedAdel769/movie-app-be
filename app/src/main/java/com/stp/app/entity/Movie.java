@@ -44,13 +44,13 @@ public class Movie {
     private LocalDate releaseDate;
 
     @Column(name = "is_hidden", columnDefinition = "boolean default false")
-    private Boolean isHidden;
+    private Boolean isHidden = false;
 
     @Column(columnDefinition = "integer default 0")
-    private Integer flags;
+    private Integer flags = 0;
 
     @Column(columnDefinition = "varchar(5) default tmdb")
-    private String source;
+    private String source = "tmdb";
 
     @Column(name = "movie")
     @ManyToMany(fetch = FetchType.LAZY)
