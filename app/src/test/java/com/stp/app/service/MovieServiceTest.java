@@ -176,7 +176,7 @@ class MovieServiceTest {
     }
 
     @Test
-    void deleteAll(){
+    void When_DeleteAll_Expect_DeleteAllByRepository(){
         movieService.deleteAll();
         verify(movieRepository).deleteAll();
     }

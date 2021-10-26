@@ -20,7 +20,9 @@ public class GenreService {
         return genre.orElse(null);
     }
 
-    public void addGenre(Genre genre) {
-        genreRepository.save(genre);
+    public Genre addGenre(Genre genre) {
+        if(genre == null)
+            return null;
+        return genreRepository.save(genre);
     }
 }
