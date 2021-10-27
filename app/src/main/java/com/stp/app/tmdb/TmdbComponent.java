@@ -52,7 +52,7 @@ public class TmdbComponent {
             fetchAllGenres();
             fetchTopRated(0, 1);
         }
-        else if(catalogDbSize != MAX_RESULTS){
+        else if(catalogDbSize < MAX_RESULTS){
             movieService.deleteAll();
             fetchTopRated(0, 1);
         }

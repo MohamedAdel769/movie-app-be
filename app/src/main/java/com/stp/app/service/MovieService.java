@@ -53,8 +53,6 @@ public class MovieService {
         if(movie == null)
             return null;
 
-        //String ln = movie.getOriginalLanguage();
-
         movie.setGenres(movieDetails.getGenres());
         movie.setReleaseDate(movieDetails.getReleaseDate());
         movie.setOriginalLanguage(movieDetails.getLanguage());

@@ -14,6 +14,7 @@ public class MovieDetails {
     @JsonProperty("release_date")
     private LocalDate releaseDate;
 
+    @JsonProperty("original_language")
     private String language;
 
     public MovieDetails() {
