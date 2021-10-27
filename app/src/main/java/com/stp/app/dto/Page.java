@@ -1,5 +1,8 @@
 package com.stp.app.dto;
 
+import java.io.Serializable;
+import java.security.PublicKey;
+
 public class Page {
     private int pageSize;
     private int pageIndex;

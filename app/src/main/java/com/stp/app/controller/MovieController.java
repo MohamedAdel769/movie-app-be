@@ -20,13 +20,7 @@ import java.util.Set;
 public class MovieController {
 
     @Autowired
-    MovieService movieService;
-
-    @Autowired
-    private MovieManagerService movieManagerService;
-
-    @Autowired
-    private UserRatingService userRatingService;
+    private MovieService movieService;
 
     //<editor-fold desc="Test block">
 //    @Autowired
@@ -56,27 +50,5 @@ public class MovieController {
 
         return ResponseEntity.ok(movie);
     }
-
-    @RequestMapping(method = RequestMethod.PUT, value = "/movies/{id}")
-    public ResponseEntity<?> flagMovie(@RequestHeader("Authorization") String header,
-                                       @PathVariable Integer id){
-        Movie movie = movieManagerService.flagMovie(id, header);
-        if(movie == null)
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(movie);
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/movies/{id}")
-    public ResponseEntity<Movie> rateMovie(@PathVariable Integer id,
-                                       @RequestHeader("Authorization") String header,
-                                       @RequestBody Rate rate){
-
-        Movie movie = userRatingService.rateMovie(id, header, rate);
-        if(movie == null)
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(movie);
-    }
-
 
 }
