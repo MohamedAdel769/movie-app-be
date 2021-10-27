@@ -41,7 +41,7 @@ public class UserRatingService {
         User user = userService.getByToken(jwtToken);
 
         // if movie or user not found
-        if(movie == null || user == null)
+        if(movie == null || user == null || rate == null)
             return null;
 
         UserRatingKey userRatingKey = new UserRatingKey(user.getId(), movieId);
