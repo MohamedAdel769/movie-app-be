@@ -37,7 +37,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = MovieController.class)
+@WebMvcTest(MovieController.class)
 class MovieControllerTest {
     @MockBean
     private MovieService movieService;
