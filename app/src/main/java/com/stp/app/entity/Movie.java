@@ -114,6 +114,8 @@ public class Movie {
         this.voteAverage = voteAverage;
         this.releaseDate = LocalDate.of(2021, 10, 26);
         this.originalLanguage = "en";
+        genres = new HashSet<>();
+        genres.add(new Genre(1, "dashmala"));
     }
     //</editor-fold>
 

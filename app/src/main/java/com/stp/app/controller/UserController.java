@@ -61,7 +61,10 @@ public class UserController {
 
     @RequestMapping("/user/recommendations")
     public ResponseEntity<List<Movie>> getRecommendations(@RequestHeader("Authorization") String header){
-        return ResponseEntity.ok(recommendationService.recommend(header));
+        List<Movie> recommendations = recommendationService.recommend(header, 5);
+        if(recommendations == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(recommendations);
     }
 
     @RequestMapping("/admin")
