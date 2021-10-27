@@ -1,5 +1,8 @@
 package com.stp.app.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.stp.app.dto.MovieDetails;
 import com.stp.app.entity.Movie;
 import com.stp.app.security.AppUserDetailsService;
 import com.stp.app.service.MovieManagerService;
@@ -11,13 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -63,5 +70,54 @@ class MovieManagerControllerTest {
                             .with(SecurityMockMvcRequestPostProcessors.user("user@gmail.com").password("1234")))
                     .andExpect(status().isNotFound());
         }
+    }
+
+    @Nested
+    class toggleHiddenControllerTests {
+        @Test
+        void When_GivenMovieIdExists_Expect_UpdatedMovie() throws Exception {
+            Movie expected = new Movie(1,"movie test 1", 1, 3.0);
+
+            Mockito.when(movieManagerService.toggleHidden(anyInt())).thenReturn(expected);
+
+            mockMvc.perform(MockMvcRequestBuilders
+                            .put("/admin/{movieId}", 1)
+                            .with(SecurityMockMvcRequestPostProcessors
+                                    .user("admin")
+                                    .password("admin")
+                                    .authorities(List.of(new SimpleGrantedAuthority("ADMIN")))))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.id").value(1))
+                    .andExpect(jsonPath("$.title").value("movie test 1"));
+        }
+
+        @Test
+        void When_GivenMovieIsNull_Expect_Fail() throws Exception {
+            Mockito.when(movieManagerService.toggleHidden(anyInt())).thenReturn(null);
+
+            mockMvc.perform(MockMvcRequestBuilders
+                            .put("/admin/{movieId}", -1)
+                            .with(SecurityMockMvcRequestPostProcessors
+                                    .user("admin")
+                                    .password("admin")
+                                    .authorities(List.of(new SimpleGrantedAuthority("ADMIN")))))
+                    .andExpect(status().isNotFound());
+        }
+    }
+
+    @Test
+    void When_GetFlagged_Expect_FlaggedList() throws Exception {
+        List<Movie> expected = new ArrayList<>();
+
+        Mockito.when(movieManagerService.getAllFlagged()).thenReturn(expected);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/admin")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .user("admin")
+                                .password("admin")
+                                .authorities(List.of(new SimpleGrantedAuthority("ADMIN")))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(expected.size()));
     }
 }

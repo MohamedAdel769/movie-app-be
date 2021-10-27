@@ -55,7 +55,8 @@ public class MovieController {
     @RequestMapping(method = RequestMethod.POST, value = "/admin/add/movie")
     public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
         movie.setSource("admin");
-        return ResponseEntity.ok(movieService.addMovie(movie));
+        Movie newMovie = movieService.addMovie(movie);
+        return ResponseEntity.ok(newMovie);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/admin/update/{movieId}")

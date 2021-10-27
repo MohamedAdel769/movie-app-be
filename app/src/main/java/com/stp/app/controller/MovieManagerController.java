@@ -31,6 +31,10 @@ public class MovieManagerController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/admin/{movieId}")
     public ResponseEntity<Movie> toggleHidden(@PathVariable Integer movieId){
-        return ResponseEntity.ok(movieManagerService.toggleHidden(movieId));
+        Movie movie = movieManagerService.toggleHidden(movieId);
+        if(movie == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(movie);
     }
 }
