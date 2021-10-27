@@ -1,5 +1,6 @@
 package com.stp.app.controller;
 
+import com.stp.app.dto.MovieDetails;
 import com.stp.app.dto.Page;
 import com.stp.app.dto.Rate;
 import com.stp.app.entity.Genre;
@@ -51,4 +52,20 @@ public class MovieController {
         return ResponseEntity.ok(movie);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/admin/add/movie")
+    public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
+        movie.setSource("admin");
+        Movie newMovie = movieService.addMovie(movie);
+        return ResponseEntity.ok(newMovie);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/admin/update/{movieId}")
+    public ResponseEntity<Movie> updateMovie(@PathVariable Integer movieId,
+                                             @RequestBody MovieDetails movieDetails) {
+        Movie movie = movieService.update(movieId, movieDetails);
+        if(movie == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(movie);
+    }
 }
