@@ -22,10 +22,6 @@ import java.util.List;
 
 @RestController
 public class UserController {
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
     @Autowired
     private AppUserDetailsService userDetailsService;
 
@@ -33,21 +29,18 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @RequestMapping(method = RequestMethod.POST, value = "/login")
-    public ResponseEntity<AuthResponse> logIn(@RequestBody AuthRequest authRequest) throws Exception {
+    public ResponseEntity<AuthResponse> logIn(@RequestBody AuthRequest authRequest) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
-                    (authRequest.getEmail(), authRequest.getPassword())
-            );
-        }catch (BadCredentialsException e){
-            throw new Exception("Invalid username or password", e);
+            UserDetails userDetails = userDetailsService
+                    .loadUserByUsername(authRequest.getEmail());
+
+            String jwt = jwtUtil.generateToken(userDetails);
+
+            return ResponseEntity.ok(new AuthResponse(jwt));
         }
-
-        UserDetails userDetails = userDetailsService
-                .loadUserByUsername(authRequest.getEmail());
-
-        String jwt = jwtUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new AuthResponse(jwt));
+        catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
     }
 }
 
