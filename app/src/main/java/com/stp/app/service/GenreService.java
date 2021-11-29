@@ -7,6 +7,8 @@ import com.stp.app.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,5 +26,11 @@ public class GenreService {
         if(genre == null)
             return null;
         return genreRepository.save(genre);
+    }
+
+    public List<Genre> getAll() {
+        List<Genre> genreList = new ArrayList<>();
+        genreRepository.findAll().forEach(genreList::add);
+        return genreList;
     }
 }

@@ -71,6 +71,7 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id")
     )
+    @JsonIgnore
     private Set<Actor> actors = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
